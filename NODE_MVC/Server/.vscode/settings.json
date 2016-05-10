@@ -1,0 +1,13 @@
+{
+      
+    
+ 
+     "files.exclude": {
+		"node_modules": true,
+		"**/*.js": true,
+        "**/*.map": true,
+        "content/css":false,
+        "content/css/*.map":true
+	}
+
+}
