@@ -13,8 +13,8 @@ export class Server {
         var port = process.env.PORT || 8080;
         
         this.configureParser();
-        this.app.use('/static', this.express.static(__dirname + '/public')); // serve all files in the public directory
-        MVC.registerRoutes(this.router,this.path.resolve('./js/controller'); // register all routes in all controller.
+        this.app.use(this.express.static(this.path.join(__dirname, 'public'))); // serve all files in the public directory
+        MVC.registerRoutes(this.router,this.path.resolve('./js/controller')); // register all routes in all controller.
         
         this.app.use('/', this.router);
         this.app.listen(port);
@@ -25,7 +25,6 @@ export class Server {
         this.app.use(this.bodyParser.urlencoded({ extended: true }));
         this.app.use(this.bodyParser.json());
     }
-    
 }
 
 var server = new Server();
