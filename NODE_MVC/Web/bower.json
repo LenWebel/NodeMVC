@@ -1,0 +1,22 @@
+{
+  "name": "Web",
+  "homepage": "https://github.com/wombelite/NodeMVC",
+  "authors": [
+    "webel <leonard.webel@gmail.com>"
+  ],
+  "description": "",
+  "main": "main.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "bootstrap": "^3.3.6"
+  }
+}
