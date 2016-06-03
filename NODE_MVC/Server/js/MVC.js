@@ -2,6 +2,7 @@
 var MVC = (function () {
     function MVC(router) {
         MVC.router = router;
+        MVC.validators = [];
     }
     MVC.httpGet = function (route) {
         return this.http("get", route);
@@ -45,7 +46,32 @@ var MVC = (function () {
             }
         });
     };
+    MVC.ValidateModel = function (model) {
+        var errors = [];
+        for (var val in MVC.validators) {
+            var isValid = MVC.validators[val].function(MVC.validators[val].errorMessage, model);
+            if (!isValid) {
+                errors.push({
+                    property: MVC.validators[val].property,
+                    isValid: isValid,
+                    errorMessage: MVC.validators[val].errorMessage
+                });
+            }
+        }
+        return errors;
+    };
+    MVC.Required = function (errorMessage, condition) {
+        return function (target, propertyKey) {
+            if (condition) {
+                MVC.validators.push({ errorMessage: errorMessage, property: propertyKey, function: function (errorMessage, model) { return condition(errorMessage, model); } });
+            }
+            else {
+                MVC.validators.push({ errorMessage: errorMessage, property: propertyKey, function: function () { return target !== undefined && target !== null && target !== ""; } });
+            }
+        };
+    };
     MVC.fs = require("fs");
+    MVC.validators = [];
     return MVC;
 }());
 exports.MVC = MVC;

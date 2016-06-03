@@ -13,6 +13,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var person_1 = require('../models/person');
 var BaseController_1 = require('./BaseController');
 require("reflect-metadata");
 var MVC_1 = require("../MVC");
@@ -28,10 +29,21 @@ var PersonController = (function (_super) {
         res.json({ message: req.params.student_id });
     };
     PersonController.prototype.CreatePerson = function (req, res) {
-        res.json({
-            params: req.params.student_id,
-            body: req.body
-        });
+        var person = new person_1.Person(req.body);
+        person.validationErrors = MVC_1.MVC.ValidateModel(person);
+        if (person.isValid) {
+            // valid model
+            res.json({
+                params: req.params.student_id,
+                body: req.body
+            });
+        }
+        else {
+            // invalid model.
+            res.json({
+                validationErrors: person.validationErrors
+            });
+        }
     };
     __decorate([
         MVC_1.MVC.httpGet('/:person_id'), 

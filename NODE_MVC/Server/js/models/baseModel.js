@@ -1,9 +1,9 @@
 "use strict";
 var BaseModel = (function () {
     function BaseModel() {
+        this.isValid = this.validationErrors !== undefined && this.validationErrors.length > 0;
+        this.validationErrors = [];
     }
-    BaseModel.prototype.validate = function (value, fct, params) {
-    };
     return BaseModel;
 }());
 exports.BaseModel = BaseModel;

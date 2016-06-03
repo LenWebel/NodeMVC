@@ -18,13 +18,29 @@ export class PersonController extends BaseController
             res.json({ message: req.params.student_id});
     }
     
-    @MVC.httpPost('/:student_id')    
+    @MVC.httpPost('/:student_id')
     public CreatePerson(req:any,res:any):void{
-            res.json(
-                { 
-                    params: req.params.student_id,
-                    body: req.body
-            });
+            
+            var person = new Person(req.body);
+              
+            person.validationErrors = MVC.ValidateModel(person);        
+            
+            if(person.isValid){
+                // valid model
+                res.json(
+                    { 
+                        params: req.params.student_id,
+                        body: req.body
+                });
+                 
+            }else{
+            // invalid model.
+            res.json({
+                validationErrors:person.validationErrors
+            })
+            }
+
+            
     }
     
     

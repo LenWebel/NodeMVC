@@ -10,6 +10,10 @@ var Server = (function () {
         var port = process.env.PORT || 8080;
         this.configureParser();
         this.app.use(this.express.static(this.path.join(__dirname, 'public'))); // serve all files in the public directory
+        this.app.use('/', function (req, res, next) {
+            console.log(new Date(), req.method, req.url);
+            next();
+        });
         MVC_1.MVC.registerRoutes(this.router, this.path.resolve('./js/controller')); // register all routes in all controller.
         this.app.use('/', this.router);
         this.app.listen(port);

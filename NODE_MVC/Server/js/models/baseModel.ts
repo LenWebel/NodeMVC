@@ -1,9 +1,8 @@
 
 export class BaseModel{
 
-    public validate(value:string,fct:any,params: Array<any>){        
-
-    }
+    public isValid: boolean = this.validationErrors !== undefined && this.validationErrors.length > 0;
+    public validationErrors = [];
     
 }
 
