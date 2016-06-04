@@ -9,13 +9,7 @@ export interface validator {
 export class MVC {
 
     static fs: any = require("fs");
-    static router: any;
     static validators: Array<validator> = [];
-
-    constructor(router: any) {
-        MVC.router = router;
-        MVC.validators = [];
-    }
 
     public static httpGet(route: string) {
         return this.http("get", route);
@@ -31,7 +25,7 @@ export class MVC {
                 route = this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // prefixes controller name IE PersonController -> Person
-                MVC.router[method]("/" + name + route, descriptor.value);
+                target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             } else {
                 throw "please provide a route for " + propertyKey
@@ -54,7 +48,8 @@ export class MVC {
             if (file.substr(-3) == '.js') {
                 var controller = require(controllerLocation + '/' + file);
                 try {
-                    controller[controllerName](router);
+                    
+                    controller[controllerName]["router"] = router;
                 }
                 catch (err) {
                     console.error("cannot register: " + controllerName)
@@ -88,6 +83,14 @@ export class MVC {
             }
             else{
                 MVC.validators.push({errorMessage:errorMessage, property: propertyKey, function: () => { return target !== undefined && target !== null && target !== ""; } });
+            }
+        }
+    }
+
+    public static Validator(errorMessage?:string,condition?: Function) {
+        return (target: any, propertyKey: string) => {
+            if (condition) {
+                 MVC.validators.push({errorMessage:errorMessage, property: propertyKey, function: (errorMessage,model) => condition(errorMessage,model) });
             }
         }
     }

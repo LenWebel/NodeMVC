@@ -1,8 +1,6 @@
 "use strict";
 var MVC = (function () {
-    function MVC(router) {
-        MVC.router = router;
-        MVC.validators = [];
+    function MVC() {
     }
     MVC.httpGet = function (route) {
         return this.http("get", route);
@@ -17,7 +15,7 @@ var MVC = (function () {
                 route = _this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // prefixes controller name IE PersonController -> Person
-                MVC.router[method]("/" + name + route, descriptor.value);
+                target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             }
             else {
@@ -38,7 +36,7 @@ var MVC = (function () {
             if (file.substr(-3) == '.js') {
                 var controller = require(controllerLocation + '/' + file);
                 try {
-                    controller[controllerName](router);
+                    controller[controllerName]["router"] = router;
                 }
                 catch (err) {
                     console.error("cannot register: " + controllerName);
@@ -67,6 +65,13 @@ var MVC = (function () {
             }
             else {
                 MVC.validators.push({ errorMessage: errorMessage, property: propertyKey, function: function () { return target !== undefined && target !== null && target !== ""; } });
+            }
+        };
+    };
+    MVC.Validator = function (errorMessage, condition) {
+        return function (target, propertyKey) {
+            if (condition) {
+                MVC.validators.push({ errorMessage: errorMessage, property: propertyKey, function: function (errorMessage, model) { return condition(errorMessage, model); } });
             }
         };
     };

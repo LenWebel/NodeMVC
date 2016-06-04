@@ -14,8 +14,8 @@ var Server = (function () {
             console.log(new Date(), req.method, req.url);
             next();
         });
-        MVC_1.MVC.registerRoutes(this.router, this.path.resolve('./js/controller')); // register all routes in all controller.
         this.app.use('/', this.router);
+        MVC_1.MVC.registerRoutes(this.router, this.path.resolve('./js/controller')); // register all routes in all controller.        
         this.app.listen(port);
         console.log('Server started on port:' + port);
     }
