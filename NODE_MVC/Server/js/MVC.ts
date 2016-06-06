@@ -24,7 +24,7 @@ export class MVC {
             if (route !== "") {
                 route = this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
-                name = name.substr(0, name.toLowerCase().indexOf("controller")); // prefixes controller name IE PersonController -> Person
+                name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name IE PersonController -> Person
                 target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             } else {
@@ -48,7 +48,6 @@ export class MVC {
             if (file.substr(-3) == '.js') {
                 var controller = require(controllerLocation + '/' + file);
                 try {
-                    
                     controller[controllerName]["router"] = router;
                 }
                 catch (err) {
@@ -58,12 +57,20 @@ export class MVC {
         });
     }
 
+    
+    //model binders.
+    
+    public static ModelBinder(request:any):any{
+        
+    }
+    
+    // viewmodel validation
+
     public static ValidateModel(model:any){
         let errors = [];
     
         for(var val in MVC.validators){
             let isValid = MVC.validators[val].function(MVC.validators[val].errorMessage,model);
-            
             if(!isValid){
                 errors.push(
                     {
@@ -75,6 +82,10 @@ export class MVC {
         }
         return errors;
     }
+
+
+
+    // decorators
 
     public static Required(errorMessage?:string,condition?: Function) {
         return (target: any, propertyKey: string) => {

@@ -23,8 +23,8 @@ export class PersonController extends BaseController
             
             var person = new Person(req.body);
               
-            person.validationErrors = MVC.ValidateModel(person);        
-            
+            person.validationErrors = MVC.ValidateModel(person);   
+
             if(person.isValid){
                 // valid model
                 res.json(

@@ -35,10 +35,10 @@ var PersonValidator = (function (_super) {
         var birthday = new Date(model.dob);
         var age = parseInt(new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0));
         console.log(age);
-        if (age < 40) {
-            console.log("you must be over the age of 40", model.dob);
+        if (isNaN(age))
             return false;
-        }
+        if (age < 40)
+            return false;
         return true;
     };
     return PersonValidator;

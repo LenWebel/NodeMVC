@@ -14,7 +14,7 @@ var MVC = (function () {
             if (route !== "") {
                 route = _this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
-                name = name.substr(0, name.toLowerCase().indexOf("controller")); // prefixes controller name IE PersonController -> Person
+                name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name IE PersonController -> Person
                 target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             }
@@ -44,6 +44,10 @@ var MVC = (function () {
             }
         });
     };
+    //model binders.
+    MVC.ModelBinder = function (request) {
+    };
+    // viewmodel validation
     MVC.ValidateModel = function (model) {
         var errors = [];
         for (var val in MVC.validators) {
@@ -58,6 +62,7 @@ var MVC = (function () {
         }
         return errors;
     };
+    // decorators
     MVC.Required = function (errorMessage, condition) {
         return function (target, propertyKey) {
             if (condition) {

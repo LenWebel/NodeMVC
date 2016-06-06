@@ -39,11 +39,12 @@ public  static  DOBAgeValidation(errorMessage,model):boolean{
     var age:Number = parseInt(new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0));
     console.log(age);
     
-    if(age < 40 ){
-        console.log("you must be over the age of 40", model.dob);
-        return false;
-    }
+    if(isNaN(<number>age))
+            return false;
     
+    if(age < 40 )
+            return false;
+      
     return true;
 }
 }
