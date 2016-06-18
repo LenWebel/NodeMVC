@@ -33,6 +33,21 @@ export class MVC {
         };
     }
 
+
+    public static Authorize() {
+
+        return (target: any) => {
+            // do something here.
+            console.log(target.name);
+        };
+    }
+
+
+    public ModelBinderRequest<TModel>(request:any, model:TModel){
+
+    }
+
+
     /// preppend slash to route if none exists.
     private static cleanRoute(route: string) {
         if (route.substr(0, 1) != "/") {

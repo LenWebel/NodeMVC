@@ -18,7 +18,7 @@ var PersonValidator = (function (_super) {
         return true;
     };
     PersonValidator.SurNameValidation = function (errorMessage, model) {
-        if (model.surname != "james") {
+        if (model.surname != "burt") {
             console.log("Please provide a valid First name:", model.surname);
             return false;
         }
@@ -34,7 +34,6 @@ var PersonValidator = (function (_super) {
     PersonValidator.DOBAgeValidation = function (errorMessage, model) {
         var birthday = new Date(model.dob);
         var age = parseInt(new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0));
-        console.log(age);
         if (isNaN(age))
             return false;
         if (age < 40)

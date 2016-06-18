@@ -16,7 +16,7 @@ public static  NameValidation(errorMessage,model):boolean{
 
 public  static  SurNameValidation(errorMessage,model):boolean{
     
-    if(model.surname != "james"){
+    if(model.surname != "burt"){
         console.log("Please provide a valid First name:", model.surname);
         return false;
     }
@@ -37,7 +37,6 @@ public  static  DOBAgeValidation(errorMessage,model):boolean{
     
     var birthday:any = new Date(model.dob);
     var age:Number = parseInt(new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0));
-    console.log(age);
     
     if(isNaN(<number>age))
             return false;

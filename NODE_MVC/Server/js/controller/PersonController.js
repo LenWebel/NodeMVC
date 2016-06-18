@@ -45,6 +45,9 @@ var PersonController = (function (_super) {
             });
         }
     };
+    PersonController.prototype.ViewModelTest = function (person) {
+        //req:any,res:any
+    };
     __decorate([
         MVC_1.MVC.httpGet('/:person_id'), 
         __metadata('design:type', Function), 
@@ -63,6 +66,16 @@ var PersonController = (function (_super) {
         __metadata('design:paramtypes', [Object, Object]), 
         __metadata('design:returntype', void 0)
     ], PersonController.prototype, "CreatePerson", null);
+    __decorate([
+        MVC_1.MVC.httpPost('/:student_id'), 
+        __metadata('design:type', Function), 
+        __metadata('design:paramtypes', [person_1.Person]), 
+        __metadata('design:returntype', void 0)
+    ], PersonController.prototype, "ViewModelTest", null);
+    PersonController = __decorate([
+        MVC_1.MVC.Authorize(), 
+        __metadata('design:paramtypes', [])
+    ], PersonController);
     return PersonController;
 }(BaseController_1.BaseController));
 exports.PersonController = PersonController;

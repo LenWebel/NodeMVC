@@ -1,5 +1,5 @@
 {
-  "name": "Web",
+  "name": "web",
   "homepage": "https://github.com/wombelite/NodeMVC",
   "authors": [
     "webel <leonard.webel@gmail.com>"
@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "jquery": "^2.2.3",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "react": "^15.1.0"
   }
 }

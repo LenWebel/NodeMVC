@@ -4,6 +4,7 @@ import {BaseController} from './BaseController';
 import "reflect-metadata";
 import {MVC} from "../MVC";
 
+@MVC.Authorize()
 export class PersonController extends BaseController 
 {
     
@@ -43,6 +44,12 @@ export class PersonController extends BaseController
             
     }
     
+
+    @MVC.httpPost('/:student_id')
+    public ViewModelTest(person:Person):void{
+        //req:any,res:any
+    }
+
     
 }
 

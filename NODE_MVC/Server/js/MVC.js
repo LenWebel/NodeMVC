@@ -23,6 +23,14 @@ var MVC = (function () {
             }
         };
     };
+    MVC.Authorize = function () {
+        return function (target) {
+            // do something here.
+            console.log(target.name);
+        };
+    };
+    MVC.prototype.ModelBinderRequest = function (request, model) {
+    };
     /// preppend slash to route if none exists.
     MVC.cleanRoute = function (route) {
         if (route.substr(0, 1) != "/") {

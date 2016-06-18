@@ -1,7 +1,3 @@
 {
-  "directory": "bower_components", 
-  "proxy": "http://webel0l:RumpleForeSkin1@dca-wbsapp-p001.rac.com.au:80/",
-  "https-proxy": "http://webel0l:RumpleForeSkin1dca-wbsapp-p001.rac.com.au:80/",
-  "strict-ssl": false 
-  
+  "directory": "bower_components"
 }
