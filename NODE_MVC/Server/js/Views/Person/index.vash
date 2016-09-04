@@ -1,0 +1,18 @@
+<html>
+    
+    <head>
+        <title>Test rest</title>
+        <style>
+                div {
+                    background-color:yellow;
+                    width:55px;
+                    display:block;
+                }
+
+        </style>
+    </head>
+    <body>
+        <div> @model.name </div>
+        <div> @model.surname </div>
+    </body>
+</html>

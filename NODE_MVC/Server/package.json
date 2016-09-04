@@ -12,7 +12,8 @@
     "systemjs": "0.19.22",
     "tsc": "^1.20150623.0",
     "typescript": "^1.8.10",
-    "typings": "^0.8.1"
+    "typings": "^0.8.1",
+    "vash": "0.12.1"
   },
   "devDependencies": {
     "tslint": "^3.9.0",

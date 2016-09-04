@@ -8,6 +8,8 @@
         "**/*js.map": true,
         "content/css":false,
         "content/css/*.map":true
-	}
-
+	},
+    "files.associations": {
+        "*.vash":"html"   
+    }
 }

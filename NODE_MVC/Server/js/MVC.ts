@@ -1,12 +1,39 @@
 
 
+export interface iAuthorization{
+    token:string;
+    authorized:boolean;
+}
+
 export interface validator {
     property: string;
     function: Function;
     errorMessage:string;
 }
 
+export interface IController {
+    router:any;
+    authorization:iAuthorization;
+}
+
+export interface IModel{
+
+}
+
+export class ActionResult{
+        
+}
+
 export class MVC {
+
+    public static View(viewName:string,ViewModel:IModel): ActionResult{
+        // some work here to find the view.
+        // search for a view with the name specified, 
+        // inject the model into the view
+        // render the view.
+        //return the view to the client. 
+        return new ActionResult();
+    };
 
     static fs: any = require("fs");
     static validators: Array<validator> = [];
@@ -24,7 +51,7 @@ export class MVC {
             if (route !== "") {
                 route = this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
-                name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name IE PersonController -> Person
+                name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
                 target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             } else {
@@ -33,20 +60,18 @@ export class MVC {
         };
     }
 
-
     public static Authorize() {
-
         return (target: any) => {
-            // do something here.
-            console.log(target.name);
+            
+            var ctrlr: IController = target;
+            ctrlr.authorization = null;
+            console.log("AuthorizeAttribute",target.name);
+
         };
     }
 
-
     public ModelBinderRequest<TModel>(request:any, model:TModel){
-
     }
-
 
     /// preppend slash to route if none exists.
     private static cleanRoute(route: string) {
@@ -63,7 +88,8 @@ export class MVC {
             if (file.substr(-3) == '.js') {
                 var controller = require(controllerLocation + '/' + file);
                 try {
-                    controller[controllerName]["router"] = router;
+                    var ctrlr: IController = controller[controllerName]; 
+                    ctrlr.router = router;
                 }
                 catch (err) {
                     console.error("cannot register: " + controllerName)

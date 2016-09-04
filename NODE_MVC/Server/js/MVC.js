@@ -1,7 +1,22 @@
 "use strict";
+var ActionResult = (function () {
+    function ActionResult() {
+    }
+    return ActionResult;
+}());
+exports.ActionResult = ActionResult;
 var MVC = (function () {
     function MVC() {
     }
+    MVC.View = function (viewName, ViewModel) {
+        // some work here to find the view.
+        // search for a view with the name specified, 
+        // inject the model into the view
+        // render the view.
+        //return the view to the client. 
+        return new ActionResult();
+    };
+    ;
     MVC.httpGet = function (route) {
         return this.http("get", route);
     };
@@ -14,7 +29,7 @@ var MVC = (function () {
             if (route !== "") {
                 route = _this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
-                name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name IE PersonController -> Person
+                name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
                 target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             }
@@ -25,8 +40,9 @@ var MVC = (function () {
     };
     MVC.Authorize = function () {
         return function (target) {
-            // do something here.
-            console.log(target.name);
+            var ctrlr = target;
+            ctrlr.authorization = null;
+            console.log("AuthorizeAttribute", target.name);
         };
     };
     MVC.prototype.ModelBinderRequest = function (request, model) {
@@ -44,7 +60,8 @@ var MVC = (function () {
             if (file.substr(-3) == '.js') {
                 var controller = require(controllerLocation + '/' + file);
                 try {
-                    controller[controllerName]["router"] = router;
+                    var ctrlr = controller[controllerName];
+                    ctrlr.router = router;
                 }
                 catch (err) {
                     console.error("cannot register: " + controllerName);

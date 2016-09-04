@@ -1,4 +1,10 @@
        {
           
         //"http.proxy": "http://webel0l:RumpleForeSkin1@dca-wbsapp-p001.rac.com.au:80/"
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.DS_Store": true,
+            "*/**/.js.map":true
+        }
        }
