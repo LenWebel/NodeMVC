@@ -1,13 +1,13 @@
 
 import {Person} from '../models/person';
-import {BaseController} from './BaseController';
+//import {BaseController} from './BaseController';
 import "reflect-metadata";
 
-import {MVC,ActionResult} from "../MVC";
+import {MVC,Controller,ActionResult} from "../MVC";
 
 
 @MVC.Authorize()
-export class PersonController extends BaseController 
+export class PersonController extends Controller 
 {
     
     @MVC.httpGet('/:person_id')

@@ -14,7 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var person_1 = require('../models/person');
-var BaseController_1 = require('./BaseController');
+//import {BaseController} from './BaseController';
 require("reflect-metadata");
 var MVC_1 = require("../MVC");
 var PersonController = (function (_super) {
@@ -89,7 +89,7 @@ var PersonController = (function (_super) {
         __metadata('design:paramtypes', [])
     ], PersonController);
     return PersonController;
-}(BaseController_1.BaseController));
+}(MVC_1.Controller));
 exports.PersonController = PersonController;
 //export = PersonController; 
 //# sourceMappingURL=PersonController.js.map

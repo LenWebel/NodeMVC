@@ -4,7 +4,7 @@
  
      "files.exclude": {
 		"node_modules": true,
-		"**/*.js": true,
+		//"**/*.js": true,
         "**/*js.map": true,
         "content/css":false,
         "content/css/*.map":true

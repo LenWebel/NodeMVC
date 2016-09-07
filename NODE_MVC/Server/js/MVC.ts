@@ -19,6 +19,9 @@ export interface IController {
 export interface IModel{
 
 }
+export class Controller{
+
+}
 
 export class ActionResult{
         
@@ -38,6 +41,16 @@ export class MVC {
     static fs: any = require("fs");
     static validators: Array<validator> = [];
 
+  static   _router;
+
+ public static get router():any{
+      return this._router;
+  }
+
+  public static set router(value:any){
+      this._router = value;
+  }
+
     public static httpGet(route: string) {
         return this.http("get", route);
     }
@@ -52,7 +65,8 @@ export class MVC {
                 route = this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
-                target.constructor.router[method]("/" + name + route, descriptor.value);
+                this.router[method]("/" + name + route, descriptor.value);
+                //target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             } else {
                 throw "please provide a route for " + propertyKey
@@ -82,8 +96,8 @@ export class MVC {
     }
 
     public static registerRoutes(router: any, controllerLocation: string) {
-
-        this.fs.readdirSync(controllerLocation).forEach(function(file) {
+        MVC.router = router;
+        this.fs.readdirSync(controllerLocation).forEach((file) => {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
                 var controller = require(controllerLocation + '/' + file);

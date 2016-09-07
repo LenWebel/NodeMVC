@@ -1,4 +1,10 @@
 "use strict";
+var Controller = (function () {
+    function Controller() {
+    }
+    return Controller;
+}());
+exports.Controller = Controller;
 var ActionResult = (function () {
     function ActionResult() {
     }
@@ -17,6 +23,16 @@ var MVC = (function () {
         return new ActionResult();
     };
     ;
+    Object.defineProperty(MVC, "router", {
+        get: function () {
+            return this._router;
+        },
+        set: function (value) {
+            this._router = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     MVC.httpGet = function (route) {
         return this.http("get", route);
     };
@@ -30,7 +46,8 @@ var MVC = (function () {
                 route = _this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
-                target.constructor.router[method]("/" + name + route, descriptor.value);
+                _this.router[method]("/" + name + route, descriptor.value);
+                //target.constructor.router[method]("/" + name + route, descriptor.value);
                 console.log("registering route: ", "'/" + name + route + "'");
             }
             else {
@@ -55,6 +72,7 @@ var MVC = (function () {
         return route;
     };
     MVC.registerRoutes = function (router, controllerLocation) {
+        MVC.router = router;
         this.fs.readdirSync(controllerLocation).forEach(function (file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
