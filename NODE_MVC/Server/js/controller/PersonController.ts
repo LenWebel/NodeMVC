@@ -1,6 +1,6 @@
 
 import {Person} from '../models/person';
-//import {BaseController} from './BaseController';
+import {BaseController} from './BaseController';
 import "reflect-metadata";
 
 import {MVC,Controller,ActionResult} from "../MVC";
@@ -20,23 +20,20 @@ export class PersonController extends Controller
             res.json({ message: req.params.student_id});
     }
     
-    @MVC.httpGet('/getstudentactionresult/:student_id')    
-    public GetStudentActionResult(req:any,res:any){
-            
-            var p:Person  = new Person({name:"leonard",surname:"webel",dob:"01/01/1970"});
+    @MVC.httpGet('/getstudentactionresult/:name/:surname/:student_id')    
+    public GetStudentActionResult(params:any){
 
-            //res.json({ message: req.params.student_id}); // JSON response.
-            res.render('person/index',p)
-            //return MVC.View("viewname",{Person:new Person({})});
+            //var p:Person  = new Person({name:"leonard",surname:params.querystring.student_id,dob:"01/01/1970"});
+            var p:Person  = new Person(params.querystring); 
+            super.Log("getstudentactionresult");
+            return super.View("person/index",p);
     }
 
     @MVC.httpPost('/:student_id')
     public CreatePerson(req:any,res:any):void{
             
             var person = new Person(req.body);
-              
             person.validationErrors = MVC.ValidateModel(person);   
-
             if(person.isValid){
                 // valid model
                 res.json(

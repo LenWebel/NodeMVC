@@ -17,12 +17,16 @@ export class Person extends BaseModel{
         @MVC.Required("You must be over the age of 37",PersonValidator.DOBAgeValidation)
         public dob:string;
         
+        public student_id:string;
+
+
         public constructor(requestBody:any)
         {
             super();
             this.name = requestBody.name;
             this.dob = requestBody.dob;
             this.surname = requestBody.surname;
+            this.student_id = requestBody.student_id;
         }
 }
 

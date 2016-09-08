@@ -19,37 +19,60 @@ export interface IController {
 export interface IModel{
 
 }
-export class Controller{
-
-}
 
 export class ActionResult{
-        
+    view:any;
+    model:any;        
 }
 
-export class MVC {
 
-    public static View(viewName:string,ViewModel:IModel): ActionResult{
+
+
+export class Controller{
+
+    public View = MVC.View;
+
+    public Log(input:string) {
+     console.log(input);
+    }
+
+    constructor(){
+        console.log("base constructor call");
+        debugger;
+    }
+
+    //public router:any;// = MVC.router;
+    //public authorization:iAuthorization;
+
+}
+
+
+export class MVC {  
+
+    static _router;
+
+    public static get router():any{
+        return this._router;
+    }
+
+    public static set router(value:any){
+        this._router = value;
+    }
+
+    public static View(view:string,model:IModel): ActionResult{
         // some work here to find the view.
         // search for a view with the name specified, 
         // inject the model into the view
         // render the view.
-        //return the view to the client. 
-        return new ActionResult();
+        //return the view to the client.
+        var actionResult:ActionResult = new ActionResult();
+        actionResult.model = model;
+        actionResult.view = view;
+        return actionResult;
     };
 
     static fs: any = require("fs");
     static validators: Array<validator> = [];
-
-  static   _router;
-
- public static get router():any{
-      return this._router;
-  }
-
-  public static set router(value:any){
-      this._router = value;
-  }
 
     public static httpGet(route: string) {
         return this.http("get", route);
@@ -65,13 +88,22 @@ export class MVC {
                 route = this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
-                this.router[method]("/" + name + route, descriptor.value);
-                //target.constructor.router[method]("/" + name + route, descriptor.value);
+                //target.constructor.router[method]("/" + name + route, this.routeFunction(descriptor.value));
+                this.router[method]("/" + name + route, this.routeFunction(descriptor.value));
                 console.log("registering route: ", "'/" + name + route + "'");
+
             } else {
                 throw "please provide a route for " + propertyKey
             }
         };
+    }
+
+    public static routeFunction(fctn:Function){
+
+        return (req:any,res:any)=>{
+            var bindingResult:ActionResult = fctn.call(null,{querystring: req.params,formValues:req.query})
+            res.render(bindingResult.view,bindingResult.model)
+        }
     }
 
     public static Authorize() {
@@ -84,8 +116,7 @@ export class MVC {
         };
     }
 
-    public ModelBinderRequest<TModel>(request:any, model:TModel){
-    }
+    public ModelBinderRequest<TModel>(request:any, model:TModel){}
 
     /// preppend slash to route if none exists.
     private static cleanRoute(route: string) {
@@ -96,11 +127,15 @@ export class MVC {
     }
 
     public static registerRoutes(router: any, controllerLocation: string) {
-        MVC.router = router;
-        this.fs.readdirSync(controllerLocation).forEach((file) => {
+        MVC.router = router; 
+        let files = this.fs.readdirSync(controllerLocation);
+        //let ctrlr:IController = require(__filename)['Controller'];
+        ///ctrlr.router = router;
+        
+        files.forEach(function(file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
-                var controller = require(controllerLocation + '/' + file);
+                var controller = require(controllerLocation + '\\' + file);
                 try {
                     var ctrlr: IController = controller[controllerName]; 
                     ctrlr.router = router;
@@ -114,7 +149,6 @@ export class MVC {
 
     
     //model binders.
-    
     public static ModelBinder(request:any):any{
         
     }

@@ -1,28 +1,25 @@
 "use strict";
-var Controller = (function () {
-    function Controller() {
-    }
-    return Controller;
-}());
-exports.Controller = Controller;
 var ActionResult = (function () {
     function ActionResult() {
     }
     return ActionResult;
 }());
 exports.ActionResult = ActionResult;
+var Controller = (function () {
+    function Controller() {
+        this.View = MVC.View;
+        console.log("base constructor call");
+        debugger;
+    }
+    Controller.prototype.Log = function (input) {
+        console.log(input);
+    };
+    return Controller;
+}());
+exports.Controller = Controller;
 var MVC = (function () {
     function MVC() {
     }
-    MVC.View = function (viewName, ViewModel) {
-        // some work here to find the view.
-        // search for a view with the name specified, 
-        // inject the model into the view
-        // render the view.
-        //return the view to the client. 
-        return new ActionResult();
-    };
-    ;
     Object.defineProperty(MVC, "router", {
         get: function () {
             return this._router;
@@ -33,6 +30,18 @@ var MVC = (function () {
         enumerable: true,
         configurable: true
     });
+    MVC.View = function (view, model) {
+        // some work here to find the view.
+        // search for a view with the name specified, 
+        // inject the model into the view
+        // render the view.
+        //return the view to the client.
+        var actionResult = new ActionResult();
+        actionResult.model = model;
+        actionResult.view = view;
+        return actionResult;
+    };
+    ;
     MVC.httpGet = function (route) {
         return this.http("get", route);
     };
@@ -46,13 +55,19 @@ var MVC = (function () {
                 route = _this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
-                _this.router[method]("/" + name + route, descriptor.value);
-                //target.constructor.router[method]("/" + name + route, descriptor.value);
+                //target.constructor.router[method]("/" + name + route, this.routeFunction(descriptor.value));
+                _this.router[method]("/" + name + route, _this.routeFunction(descriptor.value));
                 console.log("registering route: ", "'/" + name + route + "'");
             }
             else {
                 throw "please provide a route for " + propertyKey;
             }
+        };
+    };
+    MVC.routeFunction = function (fctn) {
+        return function (req, res) {
+            var bindingResult = fctn.call(null, { querystring: req.params, formValues: req.query });
+            res.render(bindingResult.view, bindingResult.model);
         };
     };
     MVC.Authorize = function () {
@@ -62,8 +77,7 @@ var MVC = (function () {
             console.log("AuthorizeAttribute", target.name);
         };
     };
-    MVC.prototype.ModelBinderRequest = function (request, model) {
-    };
+    MVC.prototype.ModelBinderRequest = function (request, model) { };
     /// preppend slash to route if none exists.
     MVC.cleanRoute = function (route) {
         if (route.substr(0, 1) != "/") {
@@ -73,10 +87,13 @@ var MVC = (function () {
     };
     MVC.registerRoutes = function (router, controllerLocation) {
         MVC.router = router;
-        this.fs.readdirSync(controllerLocation).forEach(function (file) {
+        var files = this.fs.readdirSync(controllerLocation);
+        //let ctrlr:IController = require(__filename)['Controller'];
+        ///ctrlr.router = router;
+        files.forEach(function (file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
-                var controller = require(controllerLocation + '/' + file);
+                var controller = require(controllerLocation + '\\' + file);
                 try {
                     var ctrlr = controller[controllerName];
                     ctrlr.router = router;

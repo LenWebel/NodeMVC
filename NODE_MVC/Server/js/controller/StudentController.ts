@@ -1,10 +1,10 @@
 
 import {Person} from '../models/person';
-import {BaseController} from './BaseController';
+//import {BaseController} from './BaseController';
 import "reflect-metadata";
-import {MVC} from "../MVC";
+import {MVC,Controller} from "../MVC";
 
-export class StudentController extends BaseController 
+export class StudentController extends Controller 
 {
 
     @MVC.httpGet('/thing1')

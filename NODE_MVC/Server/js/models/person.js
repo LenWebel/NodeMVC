@@ -23,6 +23,7 @@ var Person = (function (_super) {
         this.name = requestBody.name;
         this.dob = requestBody.dob;
         this.surname = requestBody.surname;
+        this.student_id = requestBody.student_id;
     }
     __decorate([
         MVC_1.MVC.Required("Please provide a valid first name", personValidator_1.PersonValidator.NameValidation), 

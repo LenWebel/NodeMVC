@@ -13,7 +13,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var BaseController_1 = require('./BaseController');
+//import {BaseController} from './BaseController';
 require("reflect-metadata");
 var MVC_1 = require("../MVC");
 var StudentController = (function (_super) {
@@ -40,7 +40,7 @@ var StudentController = (function (_super) {
         __metadata('design:returntype', void 0)
     ], StudentController.prototype, "Getthing2", null);
     return StudentController;
-}(BaseController_1.BaseController));
+}(MVC_1.Controller));
 exports.StudentController = StudentController;
 //export = PersonController; 
 //# sourceMappingURL=StudentController.js.map

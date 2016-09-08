@@ -14,7 +14,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var person_1 = require('../models/person');
-//import {BaseController} from './BaseController';
 require("reflect-metadata");
 var MVC_1 = require("../MVC");
 var PersonController = (function (_super) {
@@ -28,11 +27,11 @@ var PersonController = (function (_super) {
     PersonController.prototype.GetStudent = function (req, res) {
         res.json({ message: req.params.student_id });
     };
-    PersonController.prototype.GetStudentActionResult = function (req, res) {
-        var p = new person_1.Person({ name: "leonard", surname: "webel", dob: "01/01/1970" });
-        //res.json({ message: req.params.student_id}); // JSON response.
-        res.render('person/index', p);
-        //return MVC.View("viewname",{Person:new Person({})});
+    PersonController.prototype.GetStudentActionResult = function (params) {
+        //var p:Person  = new Person({name:"leonard",surname:params.querystring.student_id,dob:"01/01/1970"});
+        var p = new person_1.Person(params.querystring);
+        _super.prototype.Log.call(this, "getstudentactionresult");
+        return _super.prototype.View.call(this, "person/index", p);
     };
     PersonController.prototype.CreatePerson = function (req, res) {
         var person = new person_1.Person(req.body);
@@ -67,9 +66,9 @@ var PersonController = (function (_super) {
         __metadata('design:returntype', void 0)
     ], PersonController.prototype, "GetStudent", null);
     __decorate([
-        MVC_1.MVC.httpGet('/getstudentactionresult/:student_id'), 
+        MVC_1.MVC.httpGet('/getstudentactionresult/:name/:surname/:student_id'), 
         __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object, Object]), 
+        __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
     ], PersonController.prototype, "GetStudentActionResult", null);
     __decorate([
