@@ -7,10 +7,22 @@ var ActionResult = (function () {
 exports.ActionResult = ActionResult;
 var Controller = (function () {
     function Controller() {
-        this.View = MVC.View;
         console.log("base constructor call");
         debugger;
     }
+    Object.defineProperty(Controller.prototype, "Server", {
+        get: function () {
+            return this.server;
+        },
+        set: function (value) {
+            this.server = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Controller.prototype.View = function (view, model) {
+        return MVC.View(view, model);
+    };
     Controller.prototype.Log = function (input) {
         console.log(input);
     };
@@ -55,8 +67,7 @@ var MVC = (function () {
                 route = _this.cleanRoute(route);
                 var name = target.constructor.name; // controller name. 
                 name = name.substr(0, name.toLowerCase().indexOf("controller")); // trims controller name eg: PersonController -> Person
-                //target.constructor.router[method]("/" + name + route, this.routeFunction(descriptor.value));
-                _this.router[method]("/" + name + route, _this.routeFunction(descriptor.value));
+                _this.router[method]("/" + name + route, _this.routeFunction(descriptor.value, target));
                 console.log("registering route: ", "'/" + name + route + "'");
             }
             else {
@@ -64,9 +75,11 @@ var MVC = (function () {
             }
         };
     };
-    MVC.routeFunction = function (fctn) {
+    MVC.routeFunction = function (fctn, target) {
+        var _this = this;
         return function (req, res) {
-            var bindingResult = fctn.call(null, { querystring: req.params, formValues: req.query });
+            var values = _this.modelBinder(req.params, req.query, req.body);
+            var bindingResult = fctn.call(null, values, { req: req, res: res });
             res.render(bindingResult.view, bindingResult.model);
         };
     };
@@ -77,7 +90,6 @@ var MVC = (function () {
             console.log("AuthorizeAttribute", target.name);
         };
     };
-    MVC.prototype.ModelBinderRequest = function (request, model) { };
     /// preppend slash to route if none exists.
     MVC.cleanRoute = function (route) {
         if (route.substr(0, 1) != "/") {
@@ -88,8 +100,6 @@ var MVC = (function () {
     MVC.registerRoutes = function (router, controllerLocation) {
         MVC.router = router;
         var files = this.fs.readdirSync(controllerLocation);
-        //let ctrlr:IController = require(__filename)['Controller'];
-        ///ctrlr.router = router;
         files.forEach(function (file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
@@ -104,8 +114,41 @@ var MVC = (function () {
             }
         });
     };
+    /*
+    * Recursively merge properties of two objects
+    */
+    MVC.MergeObject = function (obj1, obj2) {
+        for (var p in obj2) {
+            try {
+                // Property in destination object set; update its value.
+                if (obj2[p].constructor == Object) {
+                    obj1[p] = MVC.MergeObject(obj1[p], obj2[p]);
+                }
+                else {
+                    obj1[p] = obj2[p];
+                }
+            }
+            catch (e) {
+                // Property in destination object not set; create it and set its value.
+                obj1[p] = obj2[p];
+            }
+        }
+        return obj1;
+    };
     //model binders.
-    MVC.ModelBinder = function (request) {
+    MVC.modelBinder = function (formValues, queryString, bodyValues) {
+        /* NOT COMPLETE.
+        1.) Previously bound action parameters, when the action is a child action
+        2.) Form fields (Request.Form)
+        3.) The property values in the JSON Request body (Request.InputStream), but only when the request is an AJAX request
+        4.) Route data (RouteData.Values)
+        5.) Querystring parameters (Request.QueryString)
+        6.) Posted files (Request.Files)
+         */
+        var values;
+        values = MVC.MergeObject(formValues, bodyValues);
+        values = MVC.MergeObject(values, queryString);
+        return values;
     };
     // viewmodel validation
     MVC.ValidateModel = function (model) {

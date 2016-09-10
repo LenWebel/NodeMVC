@@ -27,10 +27,9 @@ var PersonController = (function (_super) {
     PersonController.prototype.GetStudent = function (req, res) {
         res.json({ message: req.params.student_id });
     };
-    PersonController.prototype.GetStudentActionResult = function (params) {
-        //var p:Person  = new Person({name:"leonard",surname:params.querystring.student_id,dob:"01/01/1970"});
-        var p = new person_1.Person(params.querystring);
-        _super.prototype.Log.call(this, "getstudentactionresult");
+    PersonController.prototype.GetStudentActionResult = function (person, args) {
+        var p = new person_1.Person(person);
+        _super.prototype.Log.call(this, "in method log....................................");
         return _super.prototype.View.call(this, "person/index", p);
     };
     PersonController.prototype.CreatePerson = function (req, res) {
@@ -68,7 +67,7 @@ var PersonController = (function (_super) {
     __decorate([
         MVC_1.MVC.httpGet('/getstudentactionresult/:name/:surname/:student_id'), 
         __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
+        __metadata('design:paramtypes', [person_1.Person, Object]), 
         __metadata('design:returntype', void 0)
     ], PersonController.prototype, "GetStudentActionResult", null);
     __decorate([

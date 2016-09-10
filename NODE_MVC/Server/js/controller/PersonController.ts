@@ -9,6 +9,8 @@ import {MVC,Controller,ActionResult} from "../MVC";
 @MVC.Authorize()
 export class PersonController extends Controller 
 {
+
+    public Server:any;
     
     @MVC.httpGet('/:person_id')
     public GetPerson(req:any,res:any){
@@ -21,11 +23,10 @@ export class PersonController extends Controller
     }
     
     @MVC.httpGet('/getstudentactionresult/:name/:surname/:student_id')    
-    public GetStudentActionResult(params:any){
+    public GetStudentActionResult(person:Person,args:any){
 
-            //var p:Person  = new Person({name:"leonard",surname:params.querystring.student_id,dob:"01/01/1970"});
-            var p:Person  = new Person(params.querystring); 
-            super.Log("getstudentactionresult");
+            var p:Person  = new Person(person); 
+            super.Log("in method log....................................");
             return super.View("person/index",p);
     }
 
