@@ -60,10 +60,19 @@ export class Controller{
 
 }
 
+export class DefaultHelpers{
+    
+    public static TextBoxFor(field:any){
+
+        return '<input type="text" value=' + field +'/>'
+    }
+}
 
 export class MVC {  
 
     static _router;
+
+    static _templateEngine;
 
     public static get router():any{
         return this._router;
@@ -71,6 +80,18 @@ export class MVC {
 
     public static set router(value:any){
         this._router = value;
+    }
+
+    public static get templateEngine():any{
+        if(this._templateEngine === null || this._templateEngine === undefined){
+            throw 'Template engine is undefined.'
+        }
+
+        return this._templateEngine;
+    }
+
+    public static set templateEngine(value:any){
+        this._templateEngine = value;
     }
 
     public static View(view:string,model:IModel): ActionResult{
@@ -139,9 +160,23 @@ export class MVC {
         }
         return route;
     }
+    
+    public static registerHelpers(templateEngine:any){
+        //register helpers here.
+        
+        //Object.keys(DefaultHelpers).forEach((item)=>{
+        //    
+        //    
+        //    //templateEngine.helpers[item] = DefaultHelpers[item];
+        //})
+
+        
+
+    }
 
     public static registerRoutes(router: any, controllerLocation: string) {
         MVC.router = router; 
+
         let files = this.fs.readdirSync(controllerLocation);
         
         files.forEach(function(file) {
@@ -196,15 +231,18 @@ public static MergeObject(obj1, obj2) {
          */
 
             var values;
-           
                 values = MVC.MergeObject(formValues,bodyValues);
                 values = MVC.MergeObject(values,queryString);
             return values;
 
     }
     
-    // viewmodel validation
+    //vash helpers
+public static textBox(item) {
 
+}
+
+    // viewmodel validation
     public static ValidateModel(model:any){
         let errors = [];
     
@@ -225,7 +263,6 @@ public static MergeObject(obj1, obj2) {
 
 
     // decorators
-
     public static Required(errorMessage?:string,condition?: Function) {
         return (target: any, propertyKey: string) => {
             if (condition) {

@@ -28,6 +28,7 @@ var PersonController = (function (_super) {
         res.json({ message: req.params.student_id });
     };
     PersonController.prototype.GetStudentActionResult = function (person, args) {
+        debugger;
         var p = new person_1.Person(person);
         _super.prototype.Log.call(this, "in method log....................................");
         return _super.prototype.View.call(this, "person/index", p);

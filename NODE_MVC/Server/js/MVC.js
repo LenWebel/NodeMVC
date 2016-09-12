@@ -29,6 +29,15 @@ var Controller = (function () {
     return Controller;
 }());
 exports.Controller = Controller;
+var DefaultHelpers = (function () {
+    function DefaultHelpers() {
+    }
+    DefaultHelpers.TextBoxFor = function (field) {
+        return '<input type="text" value=' + field + '/>';
+    };
+    return DefaultHelpers;
+}());
+exports.DefaultHelpers = DefaultHelpers;
 var MVC = (function () {
     function MVC() {
     }
@@ -38,6 +47,19 @@ var MVC = (function () {
         },
         set: function (value) {
             this._router = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MVC, "templateEngine", {
+        get: function () {
+            if (this._templateEngine === null || this._templateEngine === undefined) {
+                throw 'Template engine is undefined.';
+            }
+            return this._templateEngine;
+        },
+        set: function (value) {
+            this._templateEngine = value;
         },
         enumerable: true,
         configurable: true
@@ -97,6 +119,14 @@ var MVC = (function () {
         }
         return route;
     };
+    MVC.registerHelpers = function (templateEngine) {
+        //register helpers here.
+        //Object.keys(DefaultHelpers).forEach((item)=>{
+        //    
+        //    
+        //    //templateEngine.helpers[item] = DefaultHelpers[item];
+        //})
+    };
     MVC.registerRoutes = function (router, controllerLocation) {
         MVC.router = router;
         var files = this.fs.readdirSync(controllerLocation);
@@ -149,6 +179,9 @@ var MVC = (function () {
         values = MVC.MergeObject(formValues, bodyValues);
         values = MVC.MergeObject(values, queryString);
         return values;
+    };
+    //vash helpers
+    MVC.textBox = function (item) {
     };
     // viewmodel validation
     MVC.ValidateModel = function (model) {

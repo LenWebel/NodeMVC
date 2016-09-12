@@ -15,8 +15,8 @@
         <div>An implementation of Node MVC</div>
         <div> @model.name </div>
         <div> @model.surname </div>
-        @html.block('thing1',function(model){
-        <li>inside the block</li>
-        })
+
     </body>
-</html>
+
+    </body>
+</html>ml>

@@ -24,7 +24,7 @@ export class PersonController extends Controller
     
     @MVC.httpGet('/getstudentactionresult/:name/:surname/:student_id')    
     public GetStudentActionResult(person:Person,args:any){
-
+debugger;
             var p:Person  = new Person(person); 
             super.Log("in method log....................................");
             return super.View("person/index",p);
