@@ -1,5 +1,12 @@
 <html>
     
+@{
+
+    var textBoxAttributes = ['class="class1"']
+    
+}
+
+
     <head>
         <title>Node.MVC</title>
         <style>
@@ -15,8 +22,9 @@
         <div>An implementation of Node MVC</div>
         <div> @model.name </div>
         <div> @model.surname </div>
+        
+        @html.TextBoxFor(model.surname,textBoxAttributes) @@notworking
+    
 
     </body>
-
-    </body>
-</html>ml>
+</html>

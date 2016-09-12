@@ -62,10 +62,26 @@ export class Controller{
 
 export class DefaultHelpers{
     
-    public static TextBoxFor(field:any){
-
-        return '<input type="text" value=' + field +'/>'
+    public static LabelFor(field:any,htmllabelAttribtes?:Array<string>){
+        return '<div class="label"> <label for="' + field + '" '  +  DefaultHelpers.stringifyAttributes(htmllabelAttribtes) +'   >' + field +'</label></div>';    
     }
+
+    public static TextBoxFor(field:any,htmlInputAttribtes?:Array<string>,htmllabelAttribtes?:Array<string>){
+        var label = this.LabelFor(field,htmllabelAttribtes);
+        var input = '<div class="field"><input '  + DefaultHelpers.stringifyAttributes(htmlInputAttribtes) + ' type="text" value="' + field + '"/></div>'; 
+
+        return  '<div>' + label + input + '</div>';
+    }
+
+    private static stringifyAttributes(htmlAttributes?:Array<string>){
+       
+       if (htmlAttributes === null || htmlAttributes === undefined || htmlAttributes === []){
+           return "";
+       }
+
+       return htmlAttributes.join(" ");
+    }
+
 }
 
 export class MVC {  
@@ -164,11 +180,12 @@ export class MVC {
     public static registerHelpers(templateEngine:any){
         //register helpers here.
         
-        //Object.keys(DefaultHelpers).forEach((item)=>{
-        //    
-        //    
-        //    //templateEngine.helpers[item] = DefaultHelpers[item];
-        //})
+        Object.keys(DefaultHelpers).forEach((item)=>{
+         templateEngine.helpers[item] = (field)=> {
+            var htmlString = DefaultHelpers[item](field);
+           return templateEngine.helpers.raw(htmlString);
+    }
+    });
 
         
 
@@ -182,7 +199,7 @@ export class MVC {
         files.forEach(function(file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
-                var controller = require(controllerLocation + '\\' + file);
+                var controller = require(controllerLocation + '/' + file);
                 try {
                     var ctrlr: IController = controller[controllerName]; 
                     ctrlr.router = router;

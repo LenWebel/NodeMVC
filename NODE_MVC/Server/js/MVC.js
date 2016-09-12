@@ -32,8 +32,19 @@ exports.Controller = Controller;
 var DefaultHelpers = (function () {
     function DefaultHelpers() {
     }
-    DefaultHelpers.TextBoxFor = function (field) {
-        return '<input type="text" value=' + field + '/>';
+    DefaultHelpers.LabelFor = function (field, htmllabelAttribtes) {
+        return '<div class="label"> <label for="' + field + '" ' + DefaultHelpers.stringifyAttributes(htmllabelAttribtes) + '   >' + field + '</label></div>';
+    };
+    DefaultHelpers.TextBoxFor = function (field, htmlInputAttribtes, htmllabelAttribtes) {
+        var label = this.LabelFor(field, htmllabelAttribtes);
+        var input = '<div class="field"><input ' + DefaultHelpers.stringifyAttributes(htmlInputAttribtes) + ' type="text" value="' + field + '"/></div>';
+        return '<div>' + label + input + '</div>';
+    };
+    DefaultHelpers.stringifyAttributes = function (htmlAttributes) {
+        if (htmlAttributes === null || htmlAttributes === undefined || htmlAttributes === []) {
+            return "";
+        }
+        return htmlAttributes.join(" ");
     };
     return DefaultHelpers;
 }());
@@ -121,11 +132,12 @@ var MVC = (function () {
     };
     MVC.registerHelpers = function (templateEngine) {
         //register helpers here.
-        //Object.keys(DefaultHelpers).forEach((item)=>{
-        //    
-        //    
-        //    //templateEngine.helpers[item] = DefaultHelpers[item];
-        //})
+        Object.keys(DefaultHelpers).forEach(function (item) {
+            templateEngine.helpers[item] = function (field) {
+                var htmlString = DefaultHelpers[item](field);
+                return templateEngine.helpers.raw(htmlString);
+            };
+        });
     };
     MVC.registerRoutes = function (router, controllerLocation) {
         MVC.router = router;
@@ -133,7 +145,7 @@ var MVC = (function () {
         files.forEach(function (file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
             if (file.substr(-3) == '.js') {
-                var controller = require(controllerLocation + '\\' + file);
+                var controller = require(controllerLocation + '/' + file);
                 try {
                     var ctrlr = controller[controllerName];
                     ctrlr.router = router;
