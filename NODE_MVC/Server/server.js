@@ -9,7 +9,7 @@ var Server = (function () {
         this.router = this.express.Router();
         this.fs = require("fs");
         this.vash = require("vash");
-        var port = process.env.PORT || 8080;
+        var port = process.env.PORT || 8089;
         this.configureParser();
         //this.app.use(this.express.static(this.path.join(__dirname, 'public'))); // serve all files in the public directory
         this.app.set('view engine', 'vash');

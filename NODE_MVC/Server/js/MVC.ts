@@ -194,6 +194,14 @@ export class MVC {
     public static registerRoutes(router: any, controllerLocation: string) {
         MVC.router = router; 
 
+        if(!this.fs.exists(controllerLocation)){
+                router.get('/',function(req,res){
+                res.send("controller path has not been configured");
+            });
+
+            throw  "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
+        }
+
         let files = this.fs.readdirSync(controllerLocation);
         
         files.forEach(function(file) {

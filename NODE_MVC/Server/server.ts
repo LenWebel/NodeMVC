@@ -10,9 +10,8 @@ export class Server {
     private fs: any = require("fs");
     private vash:any = require("vash");
     constructor(){
-
-        
-        var port = process.env.PORT || 8080;
+                
+        var port = process.env.PORT || 8089;
         this.configureParser();
         //this.app.use(this.express.static(this.path.join(__dirname, 'public'))); // serve all files in the public directory
         

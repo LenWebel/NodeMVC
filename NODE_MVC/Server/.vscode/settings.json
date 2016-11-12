@@ -12,4 +12,6 @@
     "files.associations": {
         "*.vash":"html"   
     }
+,
+"typescript.check.workspaceVersion": false
 }
