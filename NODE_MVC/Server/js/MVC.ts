@@ -158,17 +158,18 @@ export class MVC {
         return (req:any,res:any)=>{
             _target.__proto__.CurrentContext = {request:req,response:res};
             var values = this.modelBinder(req.params,req.query,req.body);
-            var bindingResult:ActionResult = fctn.call(target,values)
+            var result:ActionResult = fctn.call(target,values)
 
-            if(bindingResult != undefined){
-                if(bindingResult.view != undefined){
-                      res.render(bindingResult.view,bindingResult.model)
+
+            // this probably needs work.
+            if(result != undefined){
+                if(result.view != undefined){
+                      res.render(result.view,result.model)
                       return;
                    }
                
-                res.json({
-                    message:bindingResult
-                })                    
+                res.json({result})                    
+                return
             }
 
             throw "cannot find a return value do some work here.";
@@ -213,13 +214,15 @@ export class MVC {
     public static registerRoutes(router: any, controllerLocation: string) {
         MVC.router = router; 
 
-        //if(!this.fs.exists(controllerLocation)){
-        //        router.get('/',function(req,res){
-        //        res.send("controller path has not been configured");
-        //    });
-        //    console.log(controllerLocation);
-        //    throw  "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
-        //}
+        
+
+        if(!this.fs.existsSync(controllerLocation)){
+                router.get('/',function(req,res){
+                res.send("controller path has not been configured");
+            });
+            console.log(controllerLocation);
+            throw  "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
+        }
 
         let files = this.fs.readdirSync(controllerLocation);
         

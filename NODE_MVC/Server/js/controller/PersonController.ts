@@ -9,20 +9,26 @@ import {MVC,Controller} from "../MVC";
 @MVC.Authorize()
 export class PersonController extends Controller 
 {
-
-         
     
     @MVC.httpGet('/:person_id')
     public GetPerson(model:any){
             
             let currentContext = this.CurrentContext;
-             
-            //currentContext.response.json({ 
-            // message: currentContext.request.params
-            //});
-  
-            return currentContext.request.params;
+            return {model};
+        }
 
+    @MVC.httpGet('/getperson/:and_stuff')
+    public GetPerson2(model:any){
+            
+            let currentContext = this.CurrentContext;
+            return {model}
+        }
+
+    @MVC.httpPost('/getpersonmodel/:model')
+    public GetPersonModel(model:any){
+            
+            let currentContext = this.CurrentContext;
+            return {model}
         }
 
     @MVC.httpGet('/getstudent/:student_id')    

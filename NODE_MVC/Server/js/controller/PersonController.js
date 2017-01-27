@@ -14,10 +14,15 @@ const MVC_1 = require("../MVC");
 let PersonController = class PersonController extends MVC_1.Controller {
     GetPerson(model) {
         let currentContext = this.CurrentContext;
-        //currentContext.response.json({ 
-        // message: currentContext.request.params
-        //});
-        return currentContext.request.params;
+        return { model };
+    }
+    GetPerson2(model) {
+        let currentContext = this.CurrentContext;
+        return { model };
+    }
+    GetPersonModel(model) {
+        let currentContext = this.CurrentContext;
+        return { model };
     }
     GetStudent(req, res) {
         res.json({ message: req.params.student_id });
@@ -54,6 +59,18 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], PersonController.prototype, "GetPerson", null);
+__decorate([
+    MVC_1.MVC.httpGet('/getperson/:and_stuff'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], PersonController.prototype, "GetPerson2", null);
+__decorate([
+    MVC_1.MVC.httpPost('/getpersonmodel/:model'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], PersonController.prototype, "GetPersonModel", null);
 __decorate([
     MVC_1.MVC.httpGet('/getstudent/:student_id'),
     __metadata("design:type", Function),

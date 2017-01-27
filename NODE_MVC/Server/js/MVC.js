@@ -91,18 +91,16 @@ class MVC {
         return (req, res) => {
             _target.__proto__.CurrentContext = { request: req, response: res };
             var values = this.modelBinder(req.params, req.query, req.body);
-            var bindingResult = fctn.call(target, values);
-            if (bindingResult != undefined) {
-                if (bindingResult.view != undefined) {
-                    res.render(bindingResult.view, bindingResult.model);
+            var result = fctn.call(target, values);
+            // this probably needs work.
+            if (result != undefined) {
+                if (result.view != undefined) {
+                    res.render(result.view, result.model);
                     return;
                 }
-                res.json({
-                    message: bindingResult
-                });
+                res.json({ result });
                 return;
             }
-            
             throw "cannot find a return value do some work here.";
         };
     }
@@ -131,13 +129,13 @@ class MVC {
     }
     static registerRoutes(router, controllerLocation) {
         MVC.router = router;
-        //if(!this.fs.exists(controllerLocation)){
-        //        router.get('/',function(req,res){
-        //        res.send("controller path has not been configured");
-        //    });
-        //    console.log(controllerLocation);
-        //    throw  "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
-        //}
+        if (!this.fs.existsSync(controllerLocation)) {
+            router.get('/', function (req, res) {
+                res.send("controller path has not been configured");
+            });
+            console.log(controllerLocation);
+            throw "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
+        }
         let files = this.fs.readdirSync(controllerLocation);
         files.forEach(function (file) {
             var controllerName = file.substring(0, file.indexOf(".js"));
