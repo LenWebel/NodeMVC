@@ -1,9 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,32 +10,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 //import {BaseController} from './BaseController';
 require("reflect-metadata");
-var MVC_1 = require("../MVC");
-var StudentController = (function (_super) {
-    __extends(StudentController, _super);
-    function StudentController() {
-        _super.apply(this, arguments);
+const MVC_1 = require("../MVC");
+class StudentController extends MVC_1.Controller {
+    Getthing1(req, res) {
+        res.json({ message: "req" });
     }
-    StudentController.prototype.Getthing1 = function (req, res) {
+    Getthing2(req, res) {
         res.json({ message: "req" });
-    };
-    StudentController.prototype.Getthing2 = function (req, res) {
-        res.json({ message: "req" });
-    };
-    __decorate([
-        MVC_1.MVC.httpGet('/thing1'), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object, Object]), 
-        __metadata('design:returntype', void 0)
-    ], StudentController.prototype, "Getthing1", null);
-    __decorate([
-        MVC_1.MVC.httpGet('thing2'), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object, Object]), 
-        __metadata('design:returntype', void 0)
-    ], StudentController.prototype, "Getthing2", null);
-    return StudentController;
-}(MVC_1.Controller));
+    }
+}
+__decorate([
+    MVC_1.MVC.httpGet('/thing1'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], StudentController.prototype, "Getthing1", null);
+__decorate([
+    MVC_1.MVC.httpGet('thing2'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], StudentController.prototype, "Getthing2", null);
 exports.StudentController = StudentController;
 //export = PersonController; 
 //# sourceMappingURL=StudentController.js.map

@@ -21,6 +21,11 @@ export interface IModel{
 
 }
 
+export interface CurrentContext{
+    request:any;
+    response:any;    
+}
+
 export class ActionResult{
     view:any;
     model:any;        
@@ -32,7 +37,7 @@ export class ActionResult{
 export class Controller{
 
     public server:any;
-
+    public CurrentContext:any;
     public get Server():any{
         return this.server;
     }
@@ -149,11 +154,25 @@ export class MVC {
     }
 
     public static routeFunction(fctn:Function,target:any){
-
+        let _target = target;
         return (req:any,res:any)=>{
+            _target.__proto__.CurrentContext = {request:req,response:res};
             var values = this.modelBinder(req.params,req.query,req.body);
-            var bindingResult:ActionResult = fctn.call(null,values,{req:req,res:res})
-            res.render(bindingResult.view,bindingResult.model)
+            var bindingResult:ActionResult = fctn.call(target,values)
+
+            if(bindingResult != undefined){
+                if(bindingResult.view != undefined){
+                      res.render(bindingResult.view,bindingResult.model)
+                      return;
+                   }
+               
+                res.json({
+                    message:bindingResult
+                })                    
+            }
+
+            throw "cannot find a return value do some work here.";
+
         }
     }
 
@@ -194,13 +213,13 @@ export class MVC {
     public static registerRoutes(router: any, controllerLocation: string) {
         MVC.router = router; 
 
-        if(!this.fs.exists(controllerLocation)){
-                router.get('/',function(req,res){
-                res.send("controller path has not been configured");
-            });
-
-            throw  "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
-        }
+        //if(!this.fs.exists(controllerLocation)){
+        //        router.get('/',function(req,res){
+        //        res.send("controller path has not been configured");
+        //    });
+        //    console.log(controllerLocation);
+        //    throw  "MVC.registerRoutes(router,path); path for controller location cannot be found " + controllerLocation;
+        //}
 
         let files = this.fs.readdirSync(controllerLocation);
         

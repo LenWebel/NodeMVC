@@ -3,18 +3,26 @@ import {Person} from '../models/person';
 import {BaseController} from './BaseController';
 import "reflect-metadata";
 
-import {MVC,Controller,ActionResult} from "../MVC";
+import {MVC,Controller} from "../MVC";
 
 
 @MVC.Authorize()
 export class PersonController extends Controller 
 {
 
-    public Server:any;
+         
     
     @MVC.httpGet('/:person_id')
-    public GetPerson(req:any,res:any){
-            res.json({ message: req.params.person_id});
+    public GetPerson(model:any){
+            
+            let currentContext = this.CurrentContext;
+             
+            //currentContext.response.json({ 
+            // message: currentContext.request.params
+            //});
+  
+            return currentContext.request.params;
+
         }
 
     @MVC.httpGet('/getstudent/:student_id')    
