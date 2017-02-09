@@ -14,10 +14,12 @@ const MVC_1 = require("../MVC");
 class Person extends BaseModel_1.BaseModel {
     constructor(requestBody) {
         super();
-        this.name = requestBody.name;
-        this.dob = requestBody.dob;
-        this.surname = requestBody.surname;
-        this.student_id = requestBody.student_id;
+        if (requestBody) {
+            this.name = requestBody.name;
+            this.dob = requestBody.dob;
+            this.surname = requestBody.surname;
+            this.student_id = requestBody.student_id;
+        }
     }
 }
 __decorate([

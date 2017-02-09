@@ -24,11 +24,11 @@ export class PersonController extends Controller
             return {model}
         }
 
-    @MVC.httpPost('/getpersonmodel/:model')
+    @MVC.httpPost('/getpersonmodel')
     public GetPersonModel(model:any){
-            
             let currentContext = this.CurrentContext;
-            return {model}
+            console.log(model);
+            return {thing1:currentContext.request}
         }
 
     @MVC.httpGet('/getstudent/:student_id')    

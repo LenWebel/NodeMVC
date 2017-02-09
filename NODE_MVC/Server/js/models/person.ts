@@ -23,10 +23,12 @@ export class Person extends BaseModel{
         public constructor(requestBody:any)
         {
             super();
+            if(requestBody){
             this.name = requestBody.name;
             this.dob = requestBody.dob;
             this.surname = requestBody.surname;
             this.student_id = requestBody.student_id;
+            }
         }
 }
 

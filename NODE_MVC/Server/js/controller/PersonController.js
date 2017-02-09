@@ -22,7 +22,8 @@ let PersonController = class PersonController extends MVC_1.Controller {
     }
     GetPersonModel(model) {
         let currentContext = this.CurrentContext;
-        return { model };
+        console.log(model);
+        return { thing1: currentContext.request };
     }
     GetStudent(req, res) {
         res.json({ message: req.params.student_id });
@@ -66,7 +67,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PersonController.prototype, "GetPerson2", null);
 __decorate([
-    MVC_1.MVC.httpPost('/getpersonmodel/:model'),
+    MVC_1.MVC.httpPost('/getpersonmodel'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
