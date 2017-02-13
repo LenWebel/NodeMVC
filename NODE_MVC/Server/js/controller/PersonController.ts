@@ -1,6 +1,5 @@
 
 import {Person} from '../models/person';
-import {BaseController} from './BaseController';
 import "reflect-metadata";
 
 import {MVC,Controller} from "../MVC";

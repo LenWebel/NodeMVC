@@ -13,11 +13,14 @@ export class Server {
                 
         var port = process.env.PORT || 8089;
         this.configureParser();
-        //this.app.use(this.express.static(this.path.join(__dirname, 'public'))); // serve all files in the public directory
+
+
+// Register View Engine ###################################################################################
         
         this.app.set('view engine', 'vash');
         this.app.set('views',this.path.join(__dirname,'js/views'));
-        
+
+// Register View Engine ###################################################################################
         
         // log all access;
         this.app.use('/',(req,res,next)=>{
@@ -28,8 +31,11 @@ export class Server {
         
         this.app.use('/', this.router);
         
-        MVC.registerRoutes(this.router,this.path.resolve('./js/controller')); // register all routes in all controller.        
+// register MVC################################################################
+        MVC.registerRoutes(this.router,this.path.resolve('./js/controller')); // register all routes in all controllers.        
         MVC.registerHelpers(this.vash);
+// register MVC################################################################
+
 
         this.app.listen(port);
         console.log('Server started on port:' + port);
